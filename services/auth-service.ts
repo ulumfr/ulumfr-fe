@@ -56,7 +56,7 @@ export async function logout(): Promise<void> {
         const token = useAuthStore.getState().refreshToken;
 
         if (token) {
-            await apiClient.post("/v1/auth/logout", { refreshToken: token });
+            await apiClient.post("/v1/auth/logout", { refresh_token: token });
         }
     } catch {
         console.warn("Logout API call failed, proceeding with local logout");
