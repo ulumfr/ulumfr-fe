@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { AdminGuard } from "@/components/admin-guard";
 
 export const metadata: Metadata = {
   title: "Dashboard | Ulumfr",
-  description: "Autentikasi pengguna untuk akses layanan sistem.",
+  description: "Admin dashboard untuk mengelola portfolio CMS.",
 };
 
-export default function AuthLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <AdminGuard>{children}</AdminGuard>;
 }

@@ -2,17 +2,19 @@
 
 import * as React from "react"
 import {
-  BookOpen,
-  Bot,
-  Frame,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
+  Briefcase,
+  FileText,
+  FolderKanban,
+  FolderOpen,
+  GraduationCap,
+  Layers,
+  LayoutDashboard,
+  Mail,
+  Settings,
+  Tags,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { SidebarLogo } from "@/components/sidebar-logo"
 import {
@@ -26,106 +28,64 @@ import {
 const data = {
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboard,
       isActive: true,
+    },
+    {
+      title: "Projects",
+      url: "/dashboard/projects",
+      icon: FolderKanban,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "All Projects",
+          url: "/dashboard/projects",
+          icon: FolderOpen,
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "Categories",
+          url: "/dashboard/categories",
+          icon: Layers,
         },
         {
-          title: "Settings",
-          url: "#",
+          title: "Tags",
+          url: "/dashboard/tags",
+          icon: Tags,
         },
       ],
     },
     {
-      title: "Models",
-      url: "#",
-      icon: Bot,
+      title: "Career",
+      url: "/dashboard/careers",
+      icon: Briefcase,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Work Experience",
+          url: "/dashboard/careers",
+          icon: Briefcase,
         },
         {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
+          title: "Education",
+          url: "/dashboard/educations",
+          icon: GraduationCap,
         },
       ],
     },
     {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
+      title: "Resume",
+      url: "/dashboard/resumes",
+      icon: FileText,
+    },
+    {
+      title: "Contacts",
+      url: "/dashboard/contacts",
+      icon: Mail,
     },
     {
       title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      url: "/dashboard/settings",
+      icon: Settings,
     },
   ],
 }
@@ -138,7 +98,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
