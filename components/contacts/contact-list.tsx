@@ -27,7 +27,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ContactDetailDialog } from "./contact-detail-dialog";
+import { ContactDetailDialog } from "@/components/contacts/contact-detail-dialog";
 
 interface ContactListProps {
     contacts: Contact[];

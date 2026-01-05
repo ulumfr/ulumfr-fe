@@ -2,7 +2,7 @@
 
 import { FileText } from "lucide-react";
 import type { Resume } from "@/types/resume";
-import { ResumeCard } from "./resume-card";
+import { ResumeCard } from "@/components/resumes/resume-card";
 
 interface ResumeListProps {
     resumes: Resume[];

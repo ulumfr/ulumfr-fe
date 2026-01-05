@@ -1,10 +1,22 @@
+"use client";
+
 import { AppSidebar } from "@/components/app-sidebar";
-import { ComingSoon } from "@/components/coming-soon";
 import { PageHeader } from "@/components/page-header";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { CareerList } from "@/components/careers/career-list";
+import { CareerFormDialog } from "@/components/careers/career-form-dialog";
+import { useCareers } from "@/hooks/use-careers";
 
 export default function CareersPage() {
+    const {
+        careers,
+        isLoading,
+        createCareer,
+        updateCareer,
+        deleteCareer,
+    } = useCareers();
+
     return (
         <SidebarProvider
             style={
@@ -21,11 +33,17 @@ export default function CareersPage() {
                     <PageHeader
                         title="Work Experience"
                         description="Manage your career history"
+                        actions={<CareerFormDialog onSubmit={createCareer} />}
                     />
-                    <ComingSoon
-                        title="Work Experience"
-                        description="Add and organize your work experience."
-                    />
+                    <div className="px-4 md:px-6">
+                        <CareerList
+                            careers={careers}
+                            isLoading={isLoading}
+                            onCreate={createCareer}
+                            onUpdate={updateCareer}
+                            onDelete={deleteCareer}
+                        />
+                    </div>
                 </div>
             </SidebarInset>
         </SidebarProvider>

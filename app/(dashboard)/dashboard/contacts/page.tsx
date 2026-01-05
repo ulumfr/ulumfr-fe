@@ -4,8 +4,8 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { PageHeader } from "@/components/page-header";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { ContactList } from "@/features/contacts/components/contact-list";
-import { useContacts } from "@/features/contacts/hooks/use-contacts";
+import { ContactList } from "@/components/contacts/contact-list";
+import { useContacts } from "@/hooks/use-contacts";
 
 export default function ContactsPage() {
     const { contacts, isLoading, markAsRead, deleteContact } = useContacts();

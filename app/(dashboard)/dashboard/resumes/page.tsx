@@ -4,9 +4,9 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { PageHeader } from "@/components/page-header";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { ResumeList } from "@/features/resumes/components/resume-list";
-import { ResumeUploadDialog } from "@/features/resumes/components/resume-upload-dialog";
-import { useResumes } from "@/features/resumes/hooks/use-resumes";
+import { ResumeList } from "@/components/resumes/resume-list";
+import { ResumeUploadDialog } from "@/components/resumes/resume-upload-dialog";
+import { useResumes } from "@/hooks/use-resumes";
 
 export default function ResumesPage() {
     const {

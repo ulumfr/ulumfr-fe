@@ -4,6 +4,7 @@ import axios, {
     AxiosResponse,
 } from "axios";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
 import { useAuthStore } from "@/store/use-auth-store";
 import type { RefreshTokenResponse, ApiError } from "@/types/auth";
 
@@ -113,6 +114,10 @@ apiClient.interceptors.response.use(
                 useAuthStore.getState().logout();
 
                 if (typeof window !== "undefined") {
+                    toast.error("Session expired", {
+                        description: "Please login again to continue.",
+                        duration: 10000,
+                    });
                     window.location.href = "/auth";
                 }
 
