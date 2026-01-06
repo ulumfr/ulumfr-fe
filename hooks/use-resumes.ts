@@ -1,42 +1,68 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
-import { useResumesStore } from "@/store/use-resumes-store";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import resumeService from "@/services/resume-service";
 
 export function useResumes() {
+    const queryClient = useQueryClient();
+
     const {
-        resumes,
+        data: resumes = [],
         isLoading,
-        isUploading,
         error,
-        fetchResumes,
-        createResume,
-        updateResume,
-        deleteResume,
-        activateResume,
-        uploadAndCreateResume,
-        clearError,
-    } = useResumesStore();
+        refetch,
+    } = useQuery({
+        queryKey: ["resumes"],
+        queryFn: () => resumeService.getResumes(),
+    });
 
-    const loadResumes = useCallback(() => {
-        fetchResumes();
-    }, [fetchResumes]);
+    const uploadMutation = useMutation({
+        mutationFn: async ({ file, version }: { file: File; version: string }) => {
+            const contentType = file.type || "application/pdf";
+            const presigned = await resumeService.getUploadUrl({
+                file_name: file.name,
+                content_type: contentType,
+            });
+            await resumeService.uploadFileToR2(presigned.upload_url, file, contentType);
+            return resumeService.createResume({
+                version,
+                file_url: presigned.file_url,
+                file_name: file.name,
+                file_size: file.size,
+            });
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["resumes"] });
+            toast.success("Resume uploaded successfully");
+        },
+    });
 
-    useEffect(() => {
-        loadResumes();
-    }, [loadResumes]);
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => resumeService.deleteResume(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["resumes"] });
+            toast.success("Resume deleted successfully");
+        },
+    });
+
+    const setActiveMutation = useMutation({
+        mutationFn: (id: string) => resumeService.activateResume(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["resumes"] });
+            toast.success("Active resume updated");
+        },
+    });
 
     return {
         resumes,
         isLoading,
-        isUploading,
-        error,
-        refetch: loadResumes,
-        createResume,
-        updateResume,
-        deleteResume,
-        activateResume,
-        uploadAndCreateResume,
-        clearError,
+        error: error?.message || null,
+        refetch,
+        uploadAndCreateResume: (file: File, version: string) =>
+            uploadMutation.mutateAsync({ file, version }),
+        deleteResume: (id: string) => deleteMutation.mutateAsync(id),
+        setActiveResume: (id: string) => setActiveMutation.mutateAsync(id),
+        isUploading: uploadMutation.isPending,
     };
 }

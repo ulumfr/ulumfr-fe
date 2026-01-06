@@ -30,3 +30,13 @@ export async function updateCategory(id: string, data: UpdateCategoryInput): Pro
 export async function deleteCategory(id: string): Promise<void> {
     await apiClient.delete(`/v1/admin/categories/${id}`);
 }
+
+const categoryService = {
+    getCategories,
+    getCategory,
+    createCategory,
+    updateCategory,
+    deleteCategory,
+};
+
+export default categoryService;

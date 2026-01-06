@@ -30,3 +30,13 @@ export async function updateEducation(id: string, data: UpdateEducationInput): P
 export async function deleteEducation(id: string): Promise<void> {
     await apiClient.delete(`/v1/admin/educations/${id}`);
 }
+
+const educationService = {
+    getEducations,
+    getEducation,
+    createEducation,
+    updateEducation,
+    deleteEducation,
+};
+
+export default educationService;

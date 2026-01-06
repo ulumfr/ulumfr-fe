@@ -22,12 +22,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 interface ProjectFormDialogProps {
     project?: Project | null;
     categories: Category[];
     tags: Tag[];
-    onSubmit: (data: CreateProjectInput) => Promise<void>;
+    onSubmit: (data: CreateProjectInput) => Promise<any>;
     trigger?: React.ReactNode;
 }
 
@@ -44,7 +45,7 @@ export function ProjectFormDialog({
     const [slug, setSlug] = useState("");
     const [description, setDescription] = useState("");
     const [content, setContent] = useState("");
-    const [thumbnailUrl, setThumbnailUrl] = useState("");
+    const [thumbnailUrl, setThumbnailUrl] = useState<string | undefined>(undefined);
     const [demoUrl, setDemoUrl] = useState("");
     const [repoUrl, setRepoUrl] = useState("");
     const [isPublished, setIsPublished] = useState(false);
@@ -60,7 +61,7 @@ export function ProjectFormDialog({
             setSlug(project.slug);
             setDescription(project.description || "");
             setContent(project.content || "");
-            setThumbnailUrl(project.thumbnail_url || "");
+            setThumbnailUrl(project.thumbnail_url || undefined);
             setDemoUrl(project.demo_url || "");
             setRepoUrl(project.repo_url || "");
             setIsPublished(project.is_published);
@@ -72,7 +73,7 @@ export function ProjectFormDialog({
             setSlug("");
             setDescription("");
             setContent("");
-            setThumbnailUrl("");
+            setThumbnailUrl(undefined);
             setDemoUrl("");
             setRepoUrl("");
             setIsPublished(false);
@@ -121,7 +122,7 @@ export function ProjectFormDialog({
                 slug: slug.trim(),
                 description: description.trim() || undefined,
                 content: content.trim() || undefined,
-                thumbnail_url: thumbnailUrl.trim() || undefined,
+                thumbnail_url: thumbnailUrl || undefined,
                 demo_url: demoUrl.trim() || undefined,
                 repo_url: repoUrl.trim() || undefined,
                 is_published: isPublished,
@@ -199,13 +200,12 @@ export function ProjectFormDialog({
                         />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="thumbnailUrl">Thumbnail URL</Label>
-                        <Input
-                            id="thumbnailUrl"
-                            type="url"
-                            placeholder="https://..."
+                        <Label>Thumbnail</Label>
+                        <ImageUpload
                             value={thumbnailUrl}
-                            onChange={(e) => setThumbnailUrl(e.target.value)}
+                            onChange={setThumbnailUrl}
+                            folder="projects"
+                            placeholder="Upload project thumbnail"
                         />
                     </div>
                     <div className="grid grid-cols-2 gap-4">

@@ -30,3 +30,13 @@ export async function updateTag(id: string, data: UpdateTagInput): Promise<Tag> 
 export async function deleteTag(id: string): Promise<void> {
     await apiClient.delete(`/v1/admin/tags/${id}`);
 }
+
+const tagService = {
+    getTags,
+    getTag,
+    createTag,
+    updateTag,
+    deleteTag,
+};
+
+export default tagService;

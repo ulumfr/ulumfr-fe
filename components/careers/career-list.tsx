@@ -13,9 +13,9 @@ import { CareerFormDialog } from "./career-form-dialog";
 interface CareerListProps {
     careers: Career[];
     isLoading: boolean;
-    onCreate: (data: CreateCareerInput) => Promise<void>;
-    onUpdate: (id: string, data: UpdateCareerInput) => Promise<void>;
-    onDelete: (id: string) => Promise<void>;
+    onCreate: (data: CreateCareerInput) => Promise<any>;
+    onUpdate: (id: string, data: UpdateCareerInput) => Promise<any>;
+    onDelete: (id: string) => Promise<any>;
 }
 
 export function CareerList({

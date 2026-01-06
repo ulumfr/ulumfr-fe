@@ -20,10 +20,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DatePicker } from "@/components/ui/date-picker";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 interface CareerFormDialogProps {
     career?: Career | null;
-    onSubmit: (data: CreateCareerInput) => Promise<void>;
+    onSubmit: (data: CreateCareerInput) => Promise<any>;
     trigger?: React.ReactNode;
 }
 
@@ -38,6 +39,7 @@ export function CareerFormDialog({ career, onSubmit, trigger }: CareerFormDialog
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
     const [isCurrent, setIsCurrent] = useState(false);
     const [companyUrl, setCompanyUrl] = useState("");
+    const [logoUrl, setLogoUrl] = useState<string | undefined>(undefined);
 
     const isEdit = !!career;
 
@@ -51,6 +53,7 @@ export function CareerFormDialog({ career, onSubmit, trigger }: CareerFormDialog
             setEndDate(career.end_date ? new Date(career.end_date) : undefined);
             setIsCurrent(career.is_current);
             setCompanyUrl(career.company_url || "");
+            setLogoUrl(career.logo_url || undefined);
         } else {
             setCompany("");
             setPosition("");
@@ -60,6 +63,7 @@ export function CareerFormDialog({ career, onSubmit, trigger }: CareerFormDialog
             setEndDate(undefined);
             setIsCurrent(false);
             setCompanyUrl("");
+            setLogoUrl(undefined);
         }
     }, [career, open]);
 
@@ -80,6 +84,7 @@ export function CareerFormDialog({ career, onSubmit, trigger }: CareerFormDialog
                 end_date: endDate ? endDate.toISOString() : undefined,
                 is_current: isCurrent,
                 company_url: companyUrl.trim() || undefined,
+                logo_url: logoUrl || undefined,
             });
             toast.success(isEdit ? "Experience updated" : "Experience added", {
                 description: `${position} at ${company} has been ${isEdit ? "updated" : "added"}.`,
@@ -110,6 +115,15 @@ export function CareerFormDialog({ career, onSubmit, trigger }: CareerFormDialog
                     </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
+                    <div className="space-y-2">
+                        <Label>Company Logo</Label>
+                        <ImageUpload
+                            value={logoUrl}
+                            onChange={setLogoUrl}
+                            folder="careers"
+                            placeholder="Upload company logo"
+                        />
+                    </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label htmlFor="company">Company *</Label>

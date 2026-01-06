@@ -12,9 +12,9 @@ import { EducationFormDialog } from "./education-form-dialog";
 interface EducationListProps {
     educations: Education[];
     isLoading: boolean;
-    onCreate: (data: CreateEducationInput) => Promise<void>;
-    onUpdate: (id: string, data: UpdateEducationInput) => Promise<void>;
-    onDelete: (id: string) => Promise<void>;
+    onCreate: (data: CreateEducationInput) => Promise<any>;
+    onUpdate: (id: string, data: UpdateEducationInput) => Promise<any>;
+    onDelete: (id: string) => Promise<any>;
 }
 
 export function EducationList({

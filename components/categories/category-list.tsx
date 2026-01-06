@@ -10,8 +10,8 @@ import { CategoryFormDialog } from "./category-form-dialog";
 interface CategoryListProps {
     categories: Category[];
     isLoading: boolean;
-    onUpdate: (id: string, data: UpdateCategoryInput) => Promise<void>;
-    onDelete: (id: string) => Promise<void>;
+    onUpdate: (id: string, data: UpdateCategoryInput) => Promise<any>;
+    onDelete: (id: string) => Promise<any>;
 }
 
 export function CategoryList({

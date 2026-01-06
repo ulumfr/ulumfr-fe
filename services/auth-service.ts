@@ -9,6 +9,7 @@ import type {
     RefreshTokenResponse,
     User,
     UserApiResponse,
+    UpdateProfileInput,
 } from "@/types/auth";
 
 export async function login(data: LoginRequest): Promise<LoginResponse> {
@@ -82,12 +83,30 @@ export async function getCurrentUser(): Promise<User> {
     return normalizedUser;
 }
 
+export async function updateProfile(data: UpdateProfileInput): Promise<User> {
+    const response = await apiClient.put<UserApiResponse>("/v1/auth/profile", data);
+
+    const normalizedUser: User = {
+        id: response.data.data.id,
+        name: response.data.data.name,
+        email: response.data.data.email,
+        role: response.data.data.role,
+        createdAt: response.data.data.created_at,
+        updatedAt: response.data.data.updated_at,
+    };
+
+    useAuthStore.getState().setUser(normalizedUser);
+
+    return normalizedUser;
+}
+
 export const authService = {
     login,
     register,
     refreshToken,
     logout,
     getCurrentUser,
+    updateProfile,
 };
 
 export default authService;

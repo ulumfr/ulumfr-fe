@@ -20,7 +20,7 @@ import { Label } from "@/components/ui/label";
 
 interface TagFormDialogProps {
     tag?: Tag | null;
-    onSubmit: (data: CreateTagInput) => Promise<void>;
+    onSubmit: (data: CreateTagInput) => Promise<any>;
     trigger?: React.ReactNode;
 }
 
@@ -29,6 +29,7 @@ export function TagFormDialog({ tag, onSubmit, trigger }: TagFormDialogProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("");
+    const [iconUrl, setIconUrl] = useState("");
 
     const isEdit = !!tag;
 
@@ -36,9 +37,11 @@ export function TagFormDialog({ tag, onSubmit, trigger }: TagFormDialogProps) {
         if (tag) {
             setName(tag.name);
             setSlug(tag.slug);
+            setIconUrl(tag.icon_url || "");
         } else {
             setName("");
             setSlug("");
+            setIconUrl("");
         }
     }, [tag, open]);
 
@@ -67,6 +70,7 @@ export function TagFormDialog({ tag, onSubmit, trigger }: TagFormDialogProps) {
             await onSubmit({
                 name: name.trim(),
                 slug: slug.trim(),
+                icon_url: iconUrl.trim() || undefined,
             });
             toast.success(isEdit ? "Tag updated" : "Tag created", {
                 description: `${name} has been ${isEdit ? "updated" : "created"}.`,
@@ -116,6 +120,34 @@ export function TagFormDialog({ tag, onSubmit, trigger }: TagFormDialogProps) {
                             value={slug}
                             onChange={(e) => setSlug(e.target.value)}
                         />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="iconUrl">Devicon Class</Label>
+                        <div className="flex gap-3 items-center">
+                            <Input
+                                id="iconUrl"
+                                placeholder="e.g., devicon-react-original"
+                                value={iconUrl}
+                                onChange={(e) => setIconUrl(e.target.value)}
+                                className="flex-1"
+                            />
+                            {iconUrl && (
+                                <div className="flex items-center justify-center w-10 h-10 border rounded-md bg-muted">
+                                    <i className={`${iconUrl} text-2xl`}></i>
+                                </div>
+                            )}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                            Browse icons at{" "}
+                            <a
+                                href="https://devicon.dev/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary underline"
+                            >
+                                devicon.dev
+                            </a>
+                        </p>
                     </div>
                 </div>
                 <DialogFooter>

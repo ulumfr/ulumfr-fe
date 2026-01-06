@@ -19,10 +19,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/components/ui/date-picker";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 interface EducationFormDialogProps {
     education?: Education | null;
-    onSubmit: (data: CreateEducationInput) => Promise<void>;
+    onSubmit: (data: CreateEducationInput) => Promise<any>;
     trigger?: React.ReactNode;
 }
 
@@ -38,6 +39,7 @@ export function EducationFormDialog({ education, onSubmit, trigger }: EducationF
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
     const [gpa, setGpa] = useState("");
     const [schoolUrl, setSchoolUrl] = useState("");
+    const [logoUrl, setLogoUrl] = useState<string | undefined>(undefined);
 
     const isEdit = !!education;
 
@@ -52,6 +54,7 @@ export function EducationFormDialog({ education, onSubmit, trigger }: EducationF
             setEndDate(education.end_date ? new Date(education.end_date) : undefined);
             setGpa(education.gpa || "");
             setSchoolUrl(education.school_url || "");
+            setLogoUrl(education.logo_url || undefined);
         } else {
             setSchool("");
             setDegree("");
@@ -62,6 +65,7 @@ export function EducationFormDialog({ education, onSubmit, trigger }: EducationF
             setEndDate(undefined);
             setGpa("");
             setSchoolUrl("");
+            setLogoUrl(undefined);
         }
     }, [education, open]);
 
@@ -83,6 +87,7 @@ export function EducationFormDialog({ education, onSubmit, trigger }: EducationF
                 end_date: endDate ? endDate.toISOString() : undefined,
                 gpa: gpa.trim() || undefined,
                 school_url: schoolUrl.trim() || undefined,
+                logo_url: logoUrl || undefined,
             });
             toast.success(isEdit ? "Education updated" : "Education added", {
                 description: `${degree} at ${school} has been ${isEdit ? "updated" : "added"}.`,
@@ -113,6 +118,15 @@ export function EducationFormDialog({ education, onSubmit, trigger }: EducationF
                     </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
+                    <div className="space-y-2">
+                        <Label>School Logo</Label>
+                        <ImageUpload
+                            value={logoUrl}
+                            onChange={setLogoUrl}
+                            folder="educations"
+                            placeholder="Upload school logo"
+                        />
+                    </div>
                     <div className="space-y-2">
                         <Label htmlFor="school">School/University *</Label>
                         <Input

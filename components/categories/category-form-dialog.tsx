@@ -21,7 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 interface CategoryFormDialogProps {
     category?: Category | null;
-    onSubmit: (data: CreateCategoryInput) => Promise<void>;
+    onSubmit: (data: CreateCategoryInput) => Promise<any>;
     trigger?: React.ReactNode;
 }
 

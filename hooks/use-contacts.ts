@@ -1,40 +1,45 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
-import { useContactsStore } from "@/store/use-contacts-store";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import contactService from "@/services/contact-service";
 import type { ContactQueryParams } from "@/types/contact";
 
 export function useContacts(initialParams?: ContactQueryParams) {
+    const queryClient = useQueryClient();
+
     const {
-        contacts,
-        pagination,
+        data,
         isLoading,
         error,
-        fetchContacts,
-        markAsRead,
-        deleteContact,
-        clearError,
-    } = useContactsStore();
+        refetch,
+    } = useQuery({
+        queryKey: ["contacts", initialParams],
+        queryFn: () => contactService.getContacts(initialParams),
+    });
 
-    const loadContacts = useCallback(
-        (params?: ContactQueryParams) => {
-            fetchContacts(params || initialParams);
+    const markAsReadMutation = useMutation({
+        mutationFn: (id: string) => contactService.markAsRead(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["contacts"] });
         },
-        [fetchContacts, initialParams]
-    );
+    });
 
-    useEffect(() => {
-        loadContacts();
-    }, [loadContacts]);
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => contactService.deleteContact(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["contacts"] });
+            toast.success("Contact deleted successfully");
+        },
+    });
 
     return {
-        contacts,
-        pagination,
+        contacts: data?.data || [],
+        pagination: data?.pagination,
         isLoading,
-        error,
-        refetch: loadContacts,
-        markAsRead,
-        deleteContact,
-        clearError,
+        error: error?.message || null,
+        refetch: () => refetch(),
+        markAsRead: (id: string) => markAsReadMutation.mutateAsync(id),
+        deleteContact: (id: string) => deleteMutation.mutateAsync(id),
     };
 }

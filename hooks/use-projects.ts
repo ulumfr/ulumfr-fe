@@ -1,41 +1,55 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
-import { useProjectsStore } from "@/store/use-projects-store";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import projectService from "@/services/project-service";
+import type { CreateProjectInput, UpdateProjectInput } from "@/types/project";
 
 export function useProjects() {
+    const queryClient = useQueryClient();
+
     const {
-        projects,
-        pagination,
+        data,
         isLoading,
         error,
-        fetchProjects,
-        createProject,
-        updateProject,
-        deleteProject,
-        clearError,
-    } = useProjectsStore();
+        refetch,
+    } = useQuery({
+        queryKey: ["projects"],
+        queryFn: () => projectService.getProjects(),
+    });
 
-    const loadProjects = useCallback(
-        (params?: { page?: number; limit?: number }) => {
-            fetchProjects(params);
+    const createMutation = useMutation({
+        mutationFn: (data: CreateProjectInput) => projectService.createProject(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
         },
-        [fetchProjects]
-    );
+    });
 
-    useEffect(() => {
-        loadProjects();
-    }, [loadProjects]);
+    const updateMutation = useMutation({
+        mutationFn: ({ id, data }: { id: string; data: UpdateProjectInput }) =>
+            projectService.updateProject(id, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
+        },
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => projectService.deleteProject(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            toast.success("Project deleted successfully");
+        },
+    });
 
     return {
-        projects,
-        pagination,
+        projects: data?.data || [],
+        pagination: data?.pagination,
         isLoading,
-        error,
-        refetch: loadProjects,
-        createProject,
-        updateProject,
-        deleteProject,
-        clearError,
+        error: error?.message || null,
+        refetch,
+        createProject: (data: CreateProjectInput) => createMutation.mutateAsync(data),
+        updateProject: (id: string, data: UpdateProjectInput) =>
+            updateMutation.mutateAsync({ id, data }),
+        deleteProject: (id: string) => deleteMutation.mutateAsync(id),
     };
 }

@@ -25,8 +25,8 @@ interface ProjectListProps {
     categories: Category[];
     tags: Tag[];
     isLoading: boolean;
-    onUpdate: (id: string, data: UpdateProjectInput) => Promise<void>;
-    onDelete: (id: string) => Promise<void>;
+    onUpdate: (id: string, data: UpdateProjectInput) => Promise<any>;
+    onDelete: (id: string) => Promise<any>;
 }
 
 export function ProjectList({

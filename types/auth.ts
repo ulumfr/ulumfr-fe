@@ -88,6 +88,14 @@ export interface AuthActions {
 
 export type AuthStore = AuthState & AuthActions;
 
+export interface UpdateProfileInput {
+    name?: string;
+    email?: string;
+    current_password?: string;
+    new_password?: string;
+    image?: string;
+}
+
 export interface ApiError {
     message: string;
     statusCode: number;

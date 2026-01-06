@@ -30,3 +30,13 @@ export async function updateCareer(id: string, data: UpdateCareerInput): Promise
 export async function deleteCareer(id: string): Promise<void> {
     await apiClient.delete(`/v1/admin/careers/${id}`);
 }
+
+const careerService = {
+    getCareers,
+    getCareer,
+    createCareer,
+    updateCareer,
+    deleteCareer,
+};
+
+export default careerService;

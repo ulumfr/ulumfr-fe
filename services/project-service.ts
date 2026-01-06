@@ -37,3 +37,13 @@ export async function updateProject(id: string, data: UpdateProjectInput): Promi
 export async function deleteProject(id: string): Promise<void> {
     await apiClient.delete(`/v1/admin/projects/${id}`);
 }
+
+const projectService = {
+    getProjects,
+    getProject,
+    createProject,
+    updateProject,
+    deleteProject,
+};
+
+export default projectService;

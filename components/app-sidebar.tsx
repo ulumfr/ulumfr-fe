@@ -12,6 +12,7 @@ import {
   Mail,
   Settings,
   Tags,
+  Users,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -81,6 +82,11 @@ const data = {
       title: "Contacts",
       url: "/dashboard/contacts",
       icon: Mail,
+    },
+    {
+      title: "Users",
+      url: "/dashboard/users",
+      icon: Users,
     },
     {
       title: "Settings",

@@ -11,8 +11,8 @@ import { TagFormDialog } from "./tag-form-dialog";
 interface TagListProps {
     tags: Tag[];
     isLoading: boolean;
-    onUpdate: (id: string, data: UpdateTagInput) => Promise<void>;
-    onDelete: (id: string) => Promise<void>;
+    onUpdate: (id: string, data: UpdateTagInput) => Promise<any>;
+    onDelete: (id: string) => Promise<any>;
 }
 
 export function TagList({

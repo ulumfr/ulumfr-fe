@@ -1,36 +1,54 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
-import { useEducationsStore } from "@/store/use-educations-store";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import educationService from "@/services/education-service";
+import type { CreateEducationInput, UpdateEducationInput } from "@/types/education";
 
 export function useEducations() {
+    const queryClient = useQueryClient();
+
     const {
-        educations,
+        data: educations = [],
         isLoading,
         error,
-        fetchEducations,
-        createEducation,
-        updateEducation,
-        deleteEducation,
-        clearError,
-    } = useEducationsStore();
+        refetch,
+    } = useQuery({
+        queryKey: ["educations"],
+        queryFn: () => educationService.getEducations(),
+    });
 
-    const loadEducations = useCallback(() => {
-        fetchEducations();
-    }, [fetchEducations]);
+    const createMutation = useMutation({
+        mutationFn: (data: CreateEducationInput) => educationService.createEducation(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["educations"] });
+        },
+    });
 
-    useEffect(() => {
-        loadEducations();
-    }, [loadEducations]);
+    const updateMutation = useMutation({
+        mutationFn: ({ id, data }: { id: string; data: UpdateEducationInput }) =>
+            educationService.updateEducation(id, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["educations"] });
+        },
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => educationService.deleteEducation(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["educations"] });
+            toast.success("Education deleted successfully");
+        },
+    });
 
     return {
         educations,
         isLoading,
-        error,
-        refetch: loadEducations,
-        createEducation,
-        updateEducation,
-        deleteEducation,
-        clearError,
+        error: error?.message || null,
+        refetch,
+        createEducation: (data: CreateEducationInput) => createMutation.mutateAsync(data),
+        updateEducation: (id: string, data: UpdateEducationInput) =>
+            updateMutation.mutateAsync({ id, data }),
+        deleteEducation: (id: string) => deleteMutation.mutateAsync(id),
     };
 }
