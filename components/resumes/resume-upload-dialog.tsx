@@ -19,7 +19,7 @@ import { Label } from "@/components/ui/label";
 
 interface ResumeUploadDialogProps {
     isUploading: boolean;
-    onUpload: (file: File, version?: string) => Promise<void>;
+    onUpload: (file: File, version?: string) => Promise<unknown>;
 }
 
 export function ResumeUploadDialog({

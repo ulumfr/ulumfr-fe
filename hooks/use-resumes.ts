@@ -18,7 +18,7 @@ export function useResumes() {
     });
 
     const uploadMutation = useMutation({
-        mutationFn: async ({ file, version }: { file: File; version: string }) => {
+        mutationFn: async ({ file, version }: { file: File; version?: string }) => {
             const contentType = file.type || "application/pdf";
             const presigned = await resumeService.getUploadUrl({
                 file_name: file.name,
@@ -59,7 +59,7 @@ export function useResumes() {
         isLoading,
         error: error?.message || null,
         refetch,
-        uploadAndCreateResume: (file: File, version: string) =>
+        uploadAndCreateResume: (file: File, version?: string) =>
             uploadMutation.mutateAsync({ file, version }),
         deleteResume: (id: string) => deleteMutation.mutateAsync(id),
         setActiveResume: (id: string) => setActiveMutation.mutateAsync(id),

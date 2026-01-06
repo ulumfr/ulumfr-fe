@@ -13,7 +13,7 @@ export default function ResumesPage() {
         resumes,
         isLoading,
         isUploading,
-        activateResume,
+        setActiveResume,
         deleteResume,
         uploadAndCreateResume,
     } = useResumes();
@@ -45,7 +45,7 @@ export default function ResumesPage() {
                         <ResumeList
                             resumes={resumes}
                             isLoading={isLoading}
-                            onActivate={activateResume}
+                            onActivate={setActiveResume}
                             onDelete={deleteResume}
                         />
                     </div>
