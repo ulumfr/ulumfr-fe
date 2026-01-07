@@ -47,8 +47,7 @@ export function useCategories() {
         error: error?.message || null,
         refetch,
         createCategory: (data: CreateCategoryInput) => createMutation.mutateAsync(data),
-        updateCategory: (id: string, data: UpdateCategoryInput) =>
-            updateMutation.mutateAsync({ id, data }),
+        updateCategory: (id: string, data: UpdateCategoryInput) => updateMutation.mutateAsync({ id, data }),
         deleteCategory: (id: string) => deleteMutation.mutateAsync(id),
     };
 }

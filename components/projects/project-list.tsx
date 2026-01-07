@@ -11,6 +11,7 @@ import {
     EyeOff,
     Star,
 } from "lucide-react";
+import Image from "next/image";
 import type { Project, CreateProjectInput, UpdateProjectInput } from "@/types/project";
 import type { Category } from "@/types/category";
 import type { Tag } from "@/types/tag";
@@ -71,7 +72,17 @@ export function ProjectList({
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
-                <Card key={project.id} className="flex flex-col">
+                <Card key={project.id} className="flex flex-col overflow-hidden">
+                    {project.thumbnail_url && (
+                        <div className="relative h-40 w-full">
+                            <Image
+                                src={project.thumbnail_url}
+                                alt={project.title}
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+                    )}
                     <CardHeader className="pb-2">
                         <div className="flex items-start justify-between">
                             <div className="flex-1 min-w-0">

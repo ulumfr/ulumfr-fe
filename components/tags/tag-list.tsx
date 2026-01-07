@@ -60,6 +60,9 @@ export function TagList({
                         key={tag.id}
                         className="flex items-center gap-2 p-3 rounded-lg border bg-card group"
                     >
+                        {tag.icon_url && (
+                            <i className={tag.icon_url} style={{ fontSize: '1.25rem' }} />
+                        )}
                         <Badge variant="secondary" className="text-sm">
                             {tag.name}
                         </Badge>
@@ -93,3 +96,4 @@ export function TagList({
         </div>
     );
 }
+

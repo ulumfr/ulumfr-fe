@@ -15,6 +15,7 @@ export interface UserApiResponse {
         name: string;
         email: string;
         role: string;
+        image?: string;
         created_at: string;
         updated_at: string;
     };

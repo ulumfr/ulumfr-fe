@@ -1,5 +1,3 @@
-// Contact entity types based on Swagger API specification
-
 export interface Contact {
     id: string;
     name: string;
@@ -10,7 +8,6 @@ export interface Contact {
     created_at: string;
 }
 
-// API Response types
 export interface ContactApiResponse {
     success: boolean;
     data: Contact;
@@ -31,7 +28,6 @@ export interface Pagination {
     has_prev: boolean;
 }
 
-// Query params for fetching contacts
 export interface ContactQueryParams {
     page?: number;
     limit?: number;

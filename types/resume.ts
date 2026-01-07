@@ -1,5 +1,3 @@
-// Resume entity types based on Swagger API specification
-
 export interface Resume {
     id: string;
     file_url: string;
@@ -10,7 +8,6 @@ export interface Resume {
     created_at: string;
 }
 
-// API Response types
 export interface ResumeApiResponse {
     success: boolean;
     data: Resume;
@@ -21,7 +18,6 @@ export interface ResumeListApiResponse {
     data: Resume[];
 }
 
-// Create/Update input types
 export interface CreateResumeInput {
     file_url: string;
     file_name: string;
@@ -38,7 +34,6 @@ export interface UpdateResumeInput {
     is_active?: boolean;
 }
 
-// Upload URL types
 export interface UploadURLRequest {
     file_name: string;
     content_type: string;

@@ -48,8 +48,7 @@ export function useProjects() {
         error: error?.message || null,
         refetch,
         createProject: (data: CreateProjectInput) => createMutation.mutateAsync(data),
-        updateProject: (id: string, data: UpdateProjectInput) =>
-            updateMutation.mutateAsync({ id, data }),
+        updateProject: (id: string, data: UpdateProjectInput) => updateMutation.mutateAsync({ id, data }),
         deleteProject: (id: string) => deleteMutation.mutateAsync(id),
     };
 }

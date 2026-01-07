@@ -59,8 +59,7 @@ export function useResumes() {
         isLoading,
         error: error?.message || null,
         refetch,
-        uploadAndCreateResume: (file: File, version?: string) =>
-            uploadMutation.mutateAsync({ file, version }),
+        uploadAndCreateResume: (file: File, version?: string) => uploadMutation.mutateAsync({ file, version }),
         deleteResume: (id: string) => deleteMutation.mutateAsync(id),
         setActiveResume: (id: string) => setActiveMutation.mutateAsync(id),
         isUploading: uploadMutation.isPending,

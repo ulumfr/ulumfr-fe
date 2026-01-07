@@ -23,7 +23,8 @@ export async function login(data: LoginRequest): Promise<LoginResponse> {
 
     useAuthStore.getState().login(normalizedResponse);
 
-    await getCurrentUser();
+    // User data will be fetched in AdminGuard when entering dashboard
+    // This makes login feel faster by not blocking on /me API call
 
     return normalizedResponse;
 }
@@ -74,6 +75,7 @@ export async function getCurrentUser(): Promise<User> {
         name: response.data.data.name,
         email: response.data.data.email,
         role: response.data.data.role,
+        avatar: response.data.data.image,
         createdAt: response.data.data.created_at,
         updatedAt: response.data.data.updated_at,
     };
@@ -91,6 +93,7 @@ export async function updateProfile(data: UpdateProfileInput): Promise<User> {
         name: response.data.data.name,
         email: response.data.data.email,
         role: response.data.data.role,
+        avatar: response.data.data.image,
         createdAt: response.data.data.created_at,
         updatedAt: response.data.data.updated_at,
     };

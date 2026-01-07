@@ -1,26 +1,34 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
-const particles = Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    x: 5 + (i * 4.5) % 90,
-    y: 5 + ((i * 7) % 90),
-    size: 2 + (i % 3),
-    duration: 4 + (i % 4),
-    delay: i * 0.2,
-}));
 
 export default function Home() {
     const glowRef = useRef<HTMLDivElement>(null);
     const [isIdle, setIsIdle] = useState(true);
     const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
     const [mounted, setMounted] = useState(false);
+    const [progress, setProgress] = useState(0);
+
+    const particles = useMemo(() =>
+        Array.from({ length: 25 }, (_, i) => ({
+            id: i,
+            x: 5 + (i * 3.7) % 90,
+            y: 5 + (i * 7.3) % 90,
+            size: 2 + (i % 3),
+            duration: 3 + (i % 4),
+            delay: i * 0.1,
+        })),
+        []);
 
     useEffect(() => {
         setMounted(true);
+
+        const progressTimer = setTimeout(() => {
+            setProgress(45);
+        }, 500);
 
         const handleMouseMove = (e: MouseEvent) => {
             if (glowRef.current) {
@@ -43,6 +51,7 @@ export default function Home() {
 
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);
+            clearTimeout(progressTimer);
             if (idleTimerRef.current) {
                 clearTimeout(idleTimerRef.current);
             }
@@ -54,179 +63,234 @@ export default function Home() {
             className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
             style={{ backgroundColor: "#000000" }}
         >
-            <style jsx global>{`
-        @keyframes floatUp {
-          0%, 100% {
-            transform: translateY(0px) translateX(0px) scale(1);
-            opacity: 0.3;
-          }
-          25% {
-            transform: translateY(-30px) translateX(15px) scale(1.5);
-            opacity: 0.8;
-          }
-          50% {
-            transform: translateY(-60px) translateX(-10px) scale(1);
-            opacity: 0.5;
-          }
-          75% {
-            transform: translateY(-30px) translateX(20px) scale(1.3);
-            opacity: 0.7;
-          }
-        }
-        
-        @keyframes orbFloat {
-          0%, 100% {
-            transform: translate(0, 0) scale(1);
-          }
-          33% {
-            transform: translate(60px, -40px) scale(1.2);
-          }
-          66% {
-            transform: translate(-40px, 30px) scale(0.8);
-          }
-        }
-      `}</style>
-            <div
+            <motion.div
                 ref={glowRef}
                 className="pointer-events-none fixed w-96 h-96 rounded-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isIdle ? 0 : 1 }}
+                transition={{ duration: 0.5 }}
                 style={{
                     background:
-                        "radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 40%, transparent 70%)",
+                        "radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 40%, transparent 70%)",
                     transform: "translate(-50%, -50%)",
-                    transition: "left 0.1s ease-out, top 0.1s ease-out, opacity 0.5s",
-                    opacity: isIdle ? 0 : 1,
                     left: "50%",
                     top: "50%",
                 }}
             />
 
-            {mounted && (
-                <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                        transition: "opacity 1s ease",
-                        opacity: isIdle ? 1 : 0,
-                    }}
-                >
-                    {particles.map((p) => (
-                        <div
-                            key={p.id}
+            <AnimatePresence>
+                {mounted && isIdle && (
+                    <motion.div
+                        className="absolute inset-0 pointer-events-none"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1 }}
+                    >
+                        {particles.map((p) => (
+                            <motion.div
+                                key={p.id}
+                                className="absolute rounded-full"
+                                style={{
+                                    left: `${p.x}%`,
+                                    top: `${p.y}%`,
+                                    width: `${p.size}px`,
+                                    height: `${p.size}px`,
+                                    backgroundColor: "rgba(255, 255, 255, 0.4)",
+                                }}
+                                animate={{
+                                    y: [-20, 20, -20],
+                                    x: [-10, 10, -10],
+                                    opacity: [0.2, 0.6, 0.2],
+                                    scale: [1, 1.5, 1],
+                                }}
+                                transition={{
+                                    duration: p.duration,
+                                    repeat: Infinity,
+                                    delay: p.delay,
+                                }}
+                            />
+                        ))}
+
+                        <motion.div
+                            className="absolute rounded-full"
                             style={{
-                                position: "absolute",
-                                left: `${p.x}%`,
-                                top: `${p.y}%`,
-                                width: `${p.size}px`,
-                                height: `${p.size}px`,
-                                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                                borderRadius: "50%",
-                                animationName: isIdle ? "floatUp" : "none",
-                                animationDuration: `${p.duration}s`,
-                                animationTimingFunction: "ease-in-out",
-                                animationIterationCount: "infinite",
-                                animationDelay: `${p.delay}s`,
+                                top: "20%",
+                                left: "10%",
+                                width: "300px",
+                                height: "300px",
+                                background:
+                                    "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)",
+                                filter: "blur(60px)",
+                            }}
+                            animate={{
+                                x: [0, 100, 0],
+                                y: [0, -50, 0],
+                                scale: [1, 1.2, 1],
+                            }}
+                            transition={{
+                                duration: 15,
+                                repeat: Infinity,
                             }}
                         />
-                    ))}
 
-                    <div
-                        style={{
-                            position: "absolute",
-                            top: "15%",
-                            left: "15%",
-                            width: "300px",
-                            height: "300px",
-                            borderRadius: "50%",
-                            background:
-                                "radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)",
-                            filter: "blur(40px)",
-                            animationName: isIdle ? "orbFloat" : "none",
-                            animationDuration: "10s",
-                            animationTimingFunction: "ease-in-out",
-                            animationIterationCount: "infinite",
-                        }}
-                    />
-                    <div
-                        style={{
-                            position: "absolute",
-                            bottom: "15%",
-                            right: "15%",
-                            width: "250px",
-                            height: "250px",
-                            borderRadius: "50%",
-                            background:
-                                "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)",
-                            filter: "blur(40px)",
-                            animationName: isIdle ? "orbFloat" : "none",
-                            animationDuration: "12s",
-                            animationTimingFunction: "ease-in-out",
-                            animationIterationCount: "infinite",
-                            animationDirection: "reverse",
-                        }}
-                    />
-                </div>
-            )}
+                        <motion.div
+                            className="absolute rounded-full"
+                            style={{
+                                bottom: "20%",
+                                right: "10%",
+                                width: "250px",
+                                height: "250px",
+                                background:
+                                    "radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)",
+                                filter: "blur(60px)",
+                            }}
+                            animate={{
+                                x: [0, -80, 0],
+                                y: [0, 60, 0],
+                                scale: [1, 0.8, 1],
+                            }}
+                            transition={{
+                                duration: 12,
+                                repeat: Infinity,
+                            }}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <div
                 className="absolute inset-0"
                 style={{
-                    opacity: 0.03,
+                    opacity: 0.02,
                     backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
                             linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
-                    backgroundSize: "60px 60px",
+                    backgroundSize: "80px 80px",
                 }}
             />
 
-            <Card className="relative max-w-lg w-full z-10 bg-zinc-900 border-zinc-800">
-                <CardContent className="pt-12 pb-10 px-8 text-center">
-                    <Badge
-                        variant="secondary"
-                        className="mb-6 bg-zinc-800 text-zinc-300 border-zinc-700"
-                    >
-                        🚧 Coming Soon
-                    </Badge>
-
-                    <div className="mb-6 flex justify-center">
-                        <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-lg shadow-white/10">
-                            <svg
-                                className="w-10 h-10 text-black"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="relative z-10"
+            >
+                <Card className="max-w-lg w-full bg-zinc-900/80 border-zinc-800 backdrop-blur-xl shadow-2xl shadow-black/50">
+                    <CardContent className="pt-12 pb-10 px-8 text-center">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                        >
+                            <Badge
+                                variant="secondary"
+                                className="mb-6 bg-zinc-800 text-zinc-300 border-zinc-700"
                             >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                                🚧 Coming Soon
+                            </Badge>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                            className="mb-6 flex justify-center"
+                        >
+                            <motion.div
+                                animate={{ y: [-10, 10, -10] }}
+                                transition={{ duration: 4, repeat: Infinity }}
+                                className="w-24 h-24 rounded-2xl bg-gradient-to-br from-white to-zinc-300 flex items-center justify-center shadow-lg shadow-white/20"
+                            >
+                                <svg
+                                    className="w-12 h-12 text-black"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                                    />
+                                </svg>
+                            </motion.div>
+                        </motion.div>
+
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                            className="text-4xl font-bold text-white mb-3 tracking-tight"
+                        >
+                            Under Development
+                        </motion.h1>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
+                            className="text-zinc-400 text-lg mb-8 leading-relaxed"
+                        >
+                            Kami sedang membangun sesuatu yang luar biasa.
+                            <br />
+                            Silakan kembali lagi nanti!
+                        </motion.p>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.7 }}
+                            className="space-y-3"
+                        >
+                            <div className="flex justify-between text-sm text-zinc-500">
+                                <span>Progress</span>
+                                <span>{progress}%</span>
+                            </div>
+                            <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+                                <motion.div
+                                    className="h-full bg-gradient-to-r from-white to-zinc-400 rounded-full"
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${progress}%` }}
+                                    transition={{ duration: 1.5, delay: 0.8 }}
                                 />
-                            </svg>
-                        </div>
-                    </div>
+                            </div>
+                        </motion.div>
 
-                    <h1 className="text-3xl font-bold text-white mb-3 tracking-tight">
-                        Under Development
-                    </h1>
-
-                    <p className="text-zinc-400 text-lg mb-8 leading-relaxed">
-                        Kami sedang membangun sesuatu yang luar biasa.
-                        <br />
-                        Silakan kembali lagi nanti!
-                    </p>
-
-                    <div className="space-y-2">
-                        <div className="flex justify-between text-sm text-zinc-500">
-                            <span>Progress</span>
-                            <span>In Progress</span>
-                        </div>
-                        <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
-                            <div
-                                className="h-full bg-white rounded-full"
-                                style={{ width: "45%" }}
-                            />
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.9 }}
+                            className="mt-8 flex justify-center gap-4"
+                        >
+                            <motion.a
+                                href="https://github.com/ulumfr"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-3 rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors"
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                </svg>
+                            </motion.a>
+                            <motion.a
+                                href="https://linkedin.com/in/ulumfr"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-3 rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors"
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                                </svg>
+                            </motion.a>
+                        </motion.div>
+                    </CardContent>
+                </Card>
+            </motion.div>
         </div>
     );
 }

@@ -47,8 +47,7 @@ export function useTags() {
         error: error?.message || null,
         refetch,
         createTag: (data: CreateTagInput) => createMutation.mutateAsync(data),
-        updateTag: (id: string, data: UpdateTagInput) =>
-            updateMutation.mutateAsync({ id, data }),
+        updateTag: (id: string, data: UpdateTagInput) => updateMutation.mutateAsync({ id, data }),
         deleteTag: (id: string) => deleteMutation.mutateAsync(id),
     };
 }

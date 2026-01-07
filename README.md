@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ulumfr - Portfolio Dashboard
+
+Modern portfolio management dashboard built with Next.js 16, React 19, and TailwindCSS.
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **UI Components**: shadcn/ui + Radix UI
+- **Styling**: TailwindCSS
+- **State Management**: Zustand + React Query
+- **Animations**: Framer Motion
+- **Form Handling**: React Hook Form + Zod
+- **HTTP Client**: Axios
+
+## Features
+
+- 🔐 **Authentication** - JWT-based auth with access/refresh tokens
+- 📊 **Dashboard** - Admin panel for managing portfolio content
+- 💼 **Projects** - CRUD operations with categories & tags
+- 🎓 **Education** - Academic history management
+- 💻 **Careers** - Work experience tracking
+- 📄 **Resumes** - PDF upload with active resume toggle
+- 📬 **Contacts** - Contact form submissions viewer
+- 🏷️ **Tags** - Devicon integration for tech tags (200+)
+- 🌙 **Dark Mode** - System-aware theme switching
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Backend API running (see ulumfr-be)
+
+### Installation
 
 ```bash
+# Clone repository
+git clone https://github.com/yourusername/ulumfr-fe.git
+cd ulumfr-fe
+
+# Install dependencies
+npm install
+
+# Copy environment file
+cp .env.example .env
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create `.env` file with:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8080
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+├── app/
+│   ├── (auth)/          # Authentication pages
+│   ├── (dashboard)/     # Dashboard pages
+│   ├── (public)/        # Public landing page
+│   └── not-found.tsx    # Custom 404 page
+├── components/
+│   ├── ui/              # shadcn/ui components
+│   ├── careers/         # Career management
+│   ├── educations/      # Education management
+│   ├── projects/        # Project management
+│   ├── tags/            # Tag management
+│   └── ...
+├── hooks/               # Custom React hooks
+├── services/            # API service functions
+├── store/               # Zustand stores
+├── types/               # TypeScript types
+└── lib/                 # Utility functions
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
 
-## Deploy on Vercel
+## API Integration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This frontend connects to the Ulumfr Backend API. See [ulumfr-be](https://github.com/yourusername/ulumfr-be) for backend setup.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### API Endpoints Used
+
+- `/v1/auth/*` - Authentication
+- `/v1/admin/projects` - Project management
+- `/v1/admin/careers` - Career management
+- `/v1/admin/educations` - Education management
+- `/v1/admin/categories` - Category management
+- `/v1/admin/tags` - Tag management
+- `/v1/admin/resumes` - Resume management
+- `/v1/admin/contacts` - Contact management

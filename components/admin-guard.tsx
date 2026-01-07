@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/store/use-auth-store"
 import { getCurrentUser } from "@/services/auth-service"
+import { useDashboardPrefetch } from "@/hooks/use-dashboard-prefetch"
 
 interface AdminGuardProps {
     children: React.ReactNode
@@ -12,6 +13,9 @@ interface AdminGuardProps {
 export function AdminGuard({ children }: AdminGuardProps) {
     const router = useRouter()
     const { user, isAuthenticated, isHydrated } = useAuthStore()
+
+    // Prefetch all dashboard data when auth is confirmed
+    useDashboardPrefetch()
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -57,3 +61,4 @@ export function AdminGuard({ children }: AdminGuardProps) {
 
     return <>{children}</>
 }
+

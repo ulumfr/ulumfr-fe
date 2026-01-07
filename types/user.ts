@@ -1,5 +1,3 @@
-// User types for admin users list
-
 export interface User {
     id: string;
     name: string;

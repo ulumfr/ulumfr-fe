@@ -3,6 +3,7 @@
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Pencil, Trash2, GraduationCap, MapPin, Calendar, ExternalLink } from "lucide-react";
+import Image from "next/image";
 import type { Education, CreateEducationInput, UpdateEducationInput } from "@/types/education";
 
 import { Button } from "@/components/ui/button";
@@ -70,8 +71,18 @@ export function EducationList({
                 <Card key={education.id}>
                     <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                         <div className="flex items-start gap-3">
-                            <div className="rounded-lg bg-muted p-2">
-                                <GraduationCap className="size-5 text-muted-foreground" />
+                            <div className="rounded-lg bg-muted p-2 overflow-hidden">
+                                {education.logo_url ? (
+                                    <Image
+                                        src={education.logo_url}
+                                        alt={`${education.school} logo`}
+                                        width={20}
+                                        height={20}
+                                        className="size-5 object-contain"
+                                    />
+                                ) : (
+                                    <GraduationCap className="size-5 text-muted-foreground" />
+                                )}
                             </div>
                             <div>
                                 <CardTitle className="text-base">

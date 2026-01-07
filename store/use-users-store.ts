@@ -43,7 +43,6 @@ export const useUsersStore = create<UsersStore>()((set) => ({
     clearError: () => set({ error: null }),
 }));
 
-// Selector hooks
 export const useUsers = () => useUsersStore((state) => state.users);
 export const useUsersLoading = () => useUsersStore((state) => state.isLoading);
 export const useUsersError = () => useUsersStore((state) => state.error);

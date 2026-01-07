@@ -58,8 +58,7 @@ export function useCareers() {
         error: error?.message || null,
         refetch,
         createCareer: (data: CreateCareerInput) => createMutation.mutateAsync(data),
-        updateCareer: (id: string, data: UpdateCareerInput) =>
-            updateMutation.mutateAsync({ id, data }),
+        updateCareer: (id: string, data: UpdateCareerInput) => updateMutation.mutateAsync({ id, data }),
         deleteCareer: (id: string) => deleteMutation.mutateAsync(id),
         isCreating: createMutation.isPending,
         isUpdating: updateMutation.isPending,

@@ -45,18 +45,15 @@ export async function uploadFileToR2(
  */
 export async function uploadFile(file: File, folder: string): Promise<string> {
     const contentType = file.type || "application/octet-stream";
-    
-    // Get presigned URL
+
     const presigned = await getUploadUrl({
         file_name: file.name,
         content_type: contentType,
         folder,
     });
 
-    // Upload to R2
     await uploadFileToR2(presigned.upload_url, file, contentType);
 
-    // Return public URL
     return presigned.file_url;
 }
 

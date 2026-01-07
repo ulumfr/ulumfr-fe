@@ -89,7 +89,6 @@ export const useResumesStore = create<ResumesStore>()((set, get) => ({
     activateResume: async (id: string) => {
         try {
             await resumeService.activateResume(id);
-            // Update local state - set this resume as active, others as inactive
             set((state) => ({
                 resumes: state.resumes.map((r) => ({
                     ...r,
@@ -106,7 +105,6 @@ export const useResumesStore = create<ResumesStore>()((set, get) => ({
     uploadAndCreateResume: async (file: File, version?: string) => {
         set({ isUploading: true, error: null });
         try {
-            // Get presigned URL
             const contentType = file.type || "application/pdf";
             const presigned = await resumeService.getUploadUrl({
                 file_name: file.name,
@@ -114,10 +112,8 @@ export const useResumesStore = create<ResumesStore>()((set, get) => ({
                 folder: "resumes",
             });
 
-            // Upload to R2
             await resumeService.uploadFileToR2(presigned.upload_url, file, contentType);
 
-            // Create resume record
             const newResume = await resumeService.createResume({
                 file_url: presigned.file_url,
                 file_name: file.name,
@@ -142,12 +138,8 @@ export const useResumesStore = create<ResumesStore>()((set, get) => ({
     clearError: () => set({ error: null }),
 }));
 
-// Selector hooks
 export const useResumes = () => useResumesStore((state) => state.resumes);
-export const useActiveResume = () =>
-    useResumesStore((state) => state.resumes.find((r) => r.is_active));
-export const useResumesLoading = () =>
-    useResumesStore((state) => state.isLoading);
-export const useResumesUploading = () =>
-    useResumesStore((state) => state.isUploading);
+export const useActiveResume = () => useResumesStore((state) => state.resumes.find((r) => r.is_active));
+export const useResumesLoading = () => useResumesStore((state) => state.isLoading);
+export const useResumesUploading = () => useResumesStore((state) => state.isUploading);
 export const useResumesError = () => useResumesStore((state) => state.error);

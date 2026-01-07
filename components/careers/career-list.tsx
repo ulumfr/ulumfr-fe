@@ -3,6 +3,7 @@
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Pencil, Trash2, Briefcase, MapPin, Calendar, ExternalLink } from "lucide-react";
+import Image from "next/image";
 import type { Career, CreateCareerInput, UpdateCareerInput } from "@/types/career";
 
 import { Button } from "@/components/ui/button";
@@ -72,8 +73,18 @@ export function CareerList({
                 <Card key={career.id}>
                     <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                         <div className="flex items-start gap-3">
-                            <div className="rounded-lg bg-muted p-2">
-                                <Briefcase className="size-5 text-muted-foreground" />
+                            <div className="rounded-lg bg-muted p-2 overflow-hidden">
+                                {career.logo_url ? (
+                                    <Image
+                                        src={career.logo_url}
+                                        alt={`${career.company} logo`}
+                                        width={20}
+                                        height={20}
+                                        className="size-5 object-contain"
+                                    />
+                                ) : (
+                                    <Briefcase className="size-5 text-muted-foreground" />
+                                )}
                             </div>
                             <div>
                                 <div className="flex items-center gap-2">
@@ -143,3 +154,4 @@ export function CareerList({
         </div>
     );
 }
+
