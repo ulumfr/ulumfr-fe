@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import {
+  Award,
   Briefcase,
   FileText,
   FolderKanban,
@@ -10,8 +11,10 @@ import {
   Layers,
   LayoutDashboard,
   Mail,
+  Newspaper,
   Settings,
   Tags,
+  User,
   Users,
 } from "lucide-react"
 
@@ -33,6 +36,11 @@ const data = {
       url: "/dashboard",
       icon: LayoutDashboard,
       isActive: true,
+    },
+    {
+      title: "About",
+      url: "/dashboard/about",
+      icon: User,
     },
     {
       title: "Projects",
@@ -57,6 +65,11 @@ const data = {
       ],
     },
     {
+      title: "Blogs",
+      url: "/dashboard/blogs",
+      icon: Newspaper,
+    },
+    {
       title: "Career",
       url: "/dashboard/careers",
       icon: Briefcase,
@@ -70,6 +83,11 @@ const data = {
           title: "Education",
           url: "/dashboard/educations",
           icon: GraduationCap,
+        },
+        {
+          title: "Certificates",
+          url: "/dashboard/certificates",
+          icon: Award,
         },
       ],
     },
