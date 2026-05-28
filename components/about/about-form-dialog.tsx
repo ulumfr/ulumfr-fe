@@ -119,12 +119,12 @@ export function AboutFormDialog({ about, onSubmit, trigger }: AboutFormDialogPro
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                     <div className="space-y-2">
-                        <Label>Cover Image</Label>
+                        <Label>Profile Image (Pas Foto)</Label>
                         <ImageUpload
                             value={coverUrl}
                             onChange={setCoverUrl}
                             folder="about"
-                            placeholder="Upload cover image"
+                            placeholder="Upload profile image"
                         />
                     </div>
                     <div className="space-y-2">

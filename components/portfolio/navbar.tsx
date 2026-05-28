@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import type { Resume } from "@/types/resume";
 
 const LANDING_NAV_ITEMS = [
@@ -99,8 +100,14 @@ export default function Navbar({ resume }: NavbarProps) {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center font-mono font-bold text-primary text-sm group-hover:border-primary/60 group-hover:bg-primary/20 transition-all duration-300">
-                                BU
+                            <div className="flex items-center justify-center overflow-hidden transition-all duration-300">
+                                <Image
+                                    src="/icon.png"
+                                    alt="Logo"
+                                    width={36}
+                                    height={36}
+                                    className="object-cover"
+                                />
                             </div>
                             <span className="text-foreground font-semibold text-sm hidden sm:block">
                                 ulumfr<span className="text-primary">.my.id</span>
@@ -113,8 +120,14 @@ export default function Navbar({ resume }: NavbarProps) {
                                 whileTap={{ scale: 0.95 }}
                                 className="flex items-center gap-2"
                             >
-                                <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center font-mono font-bold text-primary text-sm group-hover:border-primary/60 group-hover:bg-primary/20 transition-all duration-300">
-                                    BU
+                                <div className="flex items-center justify-center overflow-hidden transition-all duration-300">
+                                    <Image
+                                        src="/icon.png"
+                                        alt="Logo"
+                                        width={36}
+                                        height={36}
+                                        className="object-cover"
+                                    />
                                 </div>
                                 <span className="text-foreground font-semibold text-sm hidden sm:block">
                                     ulumfr<span className="text-primary">.my.id</span>

@@ -60,31 +60,35 @@ export function AboutList({
         <div className="grid gap-4">
             {aboutList.map((about) => (
                 <Card key={about.id} className="overflow-hidden">
-                    {about.cover_url && (
-                        <div className="relative h-32 w-full">
-                            <Image
-                                src={about.cover_url}
-                                alt="Cover"
-                                fill
-                                className="object-cover"
-                            />
-                        </div>
-                    )}
                     <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                         <div className="flex items-start gap-4">
-                            <div className="rounded-full bg-muted p-1 overflow-hidden">
+                            {/* Avatar */}
+                            <div className="rounded-lg bg-muted p-1 overflow-hidden flex-shrink-0">
                                 {about.avatar_url ? (
                                     <Image
                                         src={about.avatar_url}
                                         alt={`${about.full_name} avatar`}
                                         width={48}
                                         height={48}
-                                        className="size-12 rounded-full object-cover"
+                                        className="size-12 rounded-lg object-cover"
                                     />
                                 ) : (
                                     <User className="size-12 p-2 text-muted-foreground" />
                                 )}
                             </div>
+
+                            {/* Cover (Pas Foto) */}
+                            {about.cover_url && (
+                                <div className="relative w-12 h-16 rounded-lg bg-muted overflow-hidden border border-white/10 flex-shrink-0">
+                                    <Image
+                                        src={about.cover_url}
+                                        alt="Cover"
+                                        fill
+                                        className="object-cover"
+                                    />
+                                </div>
+                            )}
+
                             <div>
                                 <div className="flex items-center gap-2">
                                     <CardTitle className="text-lg">{about.full_name}</CardTitle>

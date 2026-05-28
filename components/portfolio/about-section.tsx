@@ -19,12 +19,9 @@ export default function AboutSection({ about, tags = [] }: AboutSectionProps) {
 
     // Pick a subset of well-known tags to showcase as skills
     const skillSlugs = [
-        "typescript", "javascript", "react", "nextjs", "nodejs", "go",
-        "laravel", "php", "python", "tailwindcss", "postgresql", "mongodb",
-        "docker", "git", "prisma", "redis", "express", "figma",
+        "typescript", "javascript", "react", "nextjs", "nodejs", "go", "laravel", "php", "python", "tailwindcss", "postgresql", "mongodb", "docker", "git", "prisma", "redis", "express", "figma", "html5", "github", "notion", "vite", "supabase"
     ];
-    const displayTags = tags.filter((t) => skillSlugs.includes(t.slug)).slice(0, 8);
-    const hasMoreTags = tags.length > 8;
+    const displayTags = tags.filter((t) => skillSlugs.includes(t.slug));
 
     return (
         <section id="about" className="py-24 relative">
@@ -58,9 +55,9 @@ export default function AboutSection({ about, tags = [] }: AboutSectionProps) {
                                 dragSnapToOrigin
                                 dragConstraints={{ left: -150, right: 150, top: -150, bottom: 150 }}
                                 dragElastic={0.25}
-                                whileHover={{ 
-                                    scale: 1.05, 
-                                    rotate: 3, 
+                                whileHover={{
+                                    scale: 1.05,
+                                    rotate: 3,
                                     zIndex: 20,
                                     boxShadow: "0px 25px 50px -12px rgba(0, 0, 0, 0.5)"
                                 }}

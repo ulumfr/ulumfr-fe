@@ -49,7 +49,7 @@ export default function ContactSection() {
                     transition={{ duration: 0.5 }}
                     className="mb-16"
                 >
-                    <span className="text-primary font-mono text-sm mb-2 block">06 — Contact</span>
+                    <span className="text-primary font-mono text-sm mb-2 block">04 — Contact</span>
                     <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
                         Let&apos;s <span className="italic font-serif font-normal text-primary">connect</span>
                     </h2>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -61,6 +61,7 @@ export default function AboutPage() {
     const [blogs, setBlogs] = useState<Blog[]>([]);
     const [resume, setResume] = useState<Resume | null>(null);
     const [loaded, setLoaded] = useState(false);
+    const [activeImage, setActiveImage] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchAll() {
@@ -83,7 +84,7 @@ export default function AboutPage() {
 
     const name = about?.full_name || "Bahrul Ulum";
     const bio = about?.bio || "A passionate Full Stack Developer with experience in building modern web applications. I love turning complex problems into simple, beautiful, and intuitive solutions.";
-    const avatarUrl = about?.avatar_url;
+    const avatarUrl = about?.cover_url;
     const location = about?.location || "Malang, Indonesia";
     const tagGroups = groupTags(tags);
 
@@ -128,7 +129,7 @@ export default function AboutPage() {
                     >
                         {/* Avatar */}
                         <div className="relative flex-shrink-0">
-                            <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden bg-muted border-2 border-white/10">
+                            <div className="relative aspect-[3/4] w-32 sm:w-40 rounded-2xl overflow-hidden bg-muted border-2 border-white/10">
                                 {avatarUrl ? (
                                     <Image src={avatarUrl} alt={name} fill className="object-cover" />
                                 ) : (
@@ -160,9 +161,8 @@ export default function AboutPage() {
                             <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{bio}</p>
                         </div>
                     </motion.div>
-
                     {/* Tech Stack — Full grouped */}
-                    {tagGroups.length > 0 && (
+                    {/* {tagGroups.length > 0 && (
                         <motion.section
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -199,7 +199,7 @@ export default function AboutPage() {
                                 ))}
                             </div>
                         </motion.section>
-                    )}
+                    )} */}
 
                     {/* Certificates */}
                     {certificates.length > 0 && (
@@ -227,7 +227,7 @@ export default function AboutPage() {
                                         <div className="flex items-start gap-4">
                                             <div className="w-11 h-11 rounded-lg bg-background/50 border border-white/10 overflow-hidden flex-shrink-0 flex items-center justify-center">
                                                 {cert.image_url ? (
-                                                    <Image src={cert.image_url} alt={cert.name} width={44} height={44} className="w-full h-full object-contain p-1" />
+                                                    <Image src={cert.image_url} alt={cert.name} width={44} height={44} className="w-full h-full object-contain p-1 cursor-zoom-in" onClick={() => setActiveImage(cert.image_url || null)} />
                                                 ) : (
                                                     <svg className="w-5 h-5 text-primary/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -299,6 +299,43 @@ export default function AboutPage() {
                 </div>
             </div>
             <Footer />
+
+            {/* Lightbox / Modal */}
+            <AnimatePresence>
+                {activeImage && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setActiveImage(null)}
+                        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out"
+                    >
+                        <button
+                            className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                            onClick={() => setActiveImage(null)}
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        <motion.div
+                            initial={{ scale: 0.95 }}
+                            animate={{ scale: 1 }}
+                            exit={{ scale: 0.95 }}
+                            className="relative max-w-4xl max-h-[80vh] w-full h-full"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <Image
+                                src={activeImage}
+                                alt="Certificate Large Preview"
+                                fill
+                                className="object-contain"
+                                priority
+                            />
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }

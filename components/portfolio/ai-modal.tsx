@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 interface Message {
     id: string;
@@ -12,40 +13,141 @@ interface Message {
 
 const SUGGESTIONS = [
     "What is your tech stack?",
-    "Show me your featured projects",
-    "Are you available for freelance/work?",
+    "Tell me about yourself",
+    "Are you available for work?",
     "How can I contact you?",
 ];
 
 const getMockResponse = (input: string): string => {
     const text = input.toLowerCase();
 
-    if (text.includes("stack") || text.includes("tech") || text.includes("skill") || text.includes("bahasa") || text.includes("teknologi")) {
-        return "I specialize in building scalable web applications. My core stack includes:\n\n• **Frontend**: Next.js, React, TypeScript, Tailwind CSS\n• **Backend**: Go (Golang), Laravel (PHP), Node.js (Express)\n• **Database & Ops**: PostgreSQL, MySQL, Redis, Docker, Git\n\nI love working with Go and modern frontend frameworks like Next.js!";
+    if (text.includes("stack") || text.includes("tech") || text.includes("skill") || text.includes("language") || text.includes("technology") || text.includes("master")) {
+        return "I specialize in building fast, modern, and scalable web applications. My core expertise includes:\n\n" +
+            "• **Frontend**: Next.js, React, TypeScript, Vite, Tailwind CSS, HTML5/CSS3\n" +
+            "• **Backend**: Go (Golang - Clean Architecture, GORM, Fiber), PHP (Laravel), Node.js (Express)\n" +
+            "• **Database & Caching**: PostgreSQL, MySQL, Redis\n" +
+            "• **DevOps & Tools**: Git, GitHub, Docker, Cloudflare R2, Linux VPS, Vercel\n\n" +
+            "I am most passionate about writing high-performance APIs in Go and crafting interactive, responsive user interfaces in Next.js.";
     }
 
-    if (text.includes("project") || text.includes("portfolio") || text.includes("karya")) {
-        return "I have worked on various projects, ranging from single-page portfolios to complex dashboard systems. Some featured projects:\n\n1. **Portfolio Management Dashboard** (Next.js & Go): A full-featured CMS dashboard to manage portfolio assets and experiences.\n2. **Go Backend APIs**: High-performance RESTful APIs built with clean architecture.\n\nYou can visit my [Projects](/projects) page for the full list!";
+    if (text.includes("hire") || text.includes("work") || text.includes("freelance") || text.includes("available") || text.includes("job") || text.includes("opportunity") || text.includes("offer")) {
+        return "Yes! I am currently **available** for:\n\n" +
+            "• **Full-time Positions** (Remote or On-site in Malang/Surabaya/Jakarta, Indonesia)\n" +
+            "• **Freelance & Contract Projects** (Full Stack development, API building, or performance optimization)\n\n" +
+            "I'm ready to contribute to your team. Let's get in touch to discuss how we can work together!";
     }
 
-    if (text.includes("hire") || text.includes("work") || text.includes("freelance") || text.includes("available") || text.includes("kerja") || text.includes("job")) {
-        return "Yes! I am currently **available** for full-time roles, freelance projects, and contract work. Let's discuss how we can work together!";
+    if (text.includes("contact") || text.includes("email") || text.includes("reach") || text.includes("social") || text.includes("instagram") || text.includes("linkedin") || text.includes("ask") || text.includes("query")) {
+        return "You can reach out to me directly through the following channels:\n\n" +
+            "• **Email**: [bahrululumfr@gmail.com](mailto:bahrululumfr@gmail.com)\n" +
+            "• **LinkedIn**: [linkedin.com/in/ulumfr](https://linkedin.com/in/ulumfr)\n" +
+            "• **Instagram**: [@ulumfr](https://instagram.com/ulumfr)\n" +
+            "• **GitHub**: [github.com/ulumfr](https://github.com/ulumfr)\n\n" +
+            "I typically reply to emails within less than 24 hours!";
     }
 
-    if (text.includes("contact") || text.includes("email") || text.includes("hubungi") || text.includes("sosmed") || text.includes("instagram") || text.includes("linkedin")) {
-        return "You can reach out to me through:\n\n• **Email**: [bahrululumfr@gmail.com](mailto:bahrululumfr@gmail.com)\n• **LinkedIn**: [linkedin.com/in/ulumfr](https://linkedin.com/in/ulumfr)\n• **Instagram**: [@ulumfr](https://instagram.com/ulumfr)\n• **GitHub**: [github.com/ulumfr](https://github.com/ulumfr)";
+    if (text.includes("who") || text.includes("about") || text.includes("bio") || text.includes("name") || text.includes("self") || text.includes("profile")) {
+        return "I am **Bahrul Ulum Fadhlur Rohman** (you can call me **Ulum**), a Full Stack Developer based in Malang, Indonesia.\n\n" +
+            "I graduated from Universitas Muhammadiyah Malang and specialize in building robust backend systems (Go, Laravel) and engaging frontend interfaces (Next.js, Tailwind CSS). I believe that good code is clean, documented, and highly efficient.";
     }
 
-    if (text.includes("hello") || text.includes("hi") || text.includes("halo") || text.includes("hei") || text.includes("hey")) {
-        return "Hello! 👋 I am Bahrul's AI assistant. Ask me anything about his skills, projects, experience, or availability!";
+    if (text.includes("hello") || text.includes("hi") || text.includes("hey") || text.includes("morning") || text.includes("afternoon") || text.includes("halo")) {
+        return "Hello! 👋 I'm Bahrul Ulum's virtual AI assistant. How can I help you regarding his skills, projects, availability, or contact info?";
     }
 
-    if (text.includes("who") || text.includes("about") || text.includes("biodata") || text.includes("nama") || text.includes("siapa")) {
-        return "I am Bahrul Ulum (Ulumfr), a Full Stack Developer. I love turning complex problems into simple, beautiful, and intuitive digital solutions.";
-    }
-
-    return "That's a great question! I'm a client-side assistant trained on Bahrul's portfolio data. You can ask me about his:\n\n• **Tech Stack & Skills**\n• **Projects & Creations**\n• **Job Availability & Freelance**\n• **Contact & Social Media**";
+    return "That's an interesting question! As a static virtual assistant, I have complete information about Bahrul Ulum. Feel free to ask about:\n\n" +
+        "• **Tech Stack & Skills** (type 'tech stack')\n" +
+        "• **Projects & Portfolio** (type 'projects')\n" +
+        "• **Contact & Social Media** (type 'contact')\n" +
+        "• **Job Availability & Hire** (type 'availability')\n" +
+        "• **About Bahrul Ulum** (type 'about')";
 };
+
+function parseMarkdownToJSX(text: string) {
+    const lines = text.split("\n");
+    
+    return lines.map((line, lineIdx) => {
+        if (!line.trim()) {
+            return <div key={lineIdx} className="h-2" />;
+        }
+
+        const isBullet = line.startsWith("• ") || line.startsWith("- ");
+        const isNumbered = /^\d+\.\s/.test(line);
+        let content = line;
+        
+        if (isBullet) {
+            content = line.substring(2);
+        } else if (isNumbered) {
+            content = line.replace(/^\d+\.\s/, "");
+        }
+
+        const parts = content.split(/(\*\*.*?\*\*|\[.*?\]\(.*?\))/g);
+        
+        const renderedLine = parts.map((part, partIdx) => {
+            if (part.startsWith("**") && part.endsWith("**")) {
+                const boldText = part.slice(2, -2);
+                return <strong key={partIdx} className="font-bold text-foreground">{boldText}</strong>;
+            }
+            if (part.startsWith("[") && part.includes("](")) {
+                const textMatch = part.match(/\[(.*?)\]/);
+                const urlMatch = part.match(/\((.*?)\)/);
+                if (textMatch && urlMatch) {
+                    const linkText = textMatch[1];
+                    const linkUrl = urlMatch[1];
+                    const isExternal = linkUrl.startsWith("http") || linkUrl.startsWith("mailto");
+                    if (isExternal) {
+                        return (
+                            <a
+                                key={partIdx}
+                                href={linkUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary hover:underline underline-offset-4 font-semibold inline-flex items-center gap-0.5 transition-colors"
+                            >
+                                {linkText}
+                                <svg className="w-3.5 h-3.5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                            </a>
+                        );
+                    } else {
+                        return (
+                            <Link
+                                key={partIdx}
+                                href={linkUrl}
+                                className="text-primary hover:underline underline-offset-4 font-semibold transition-colors"
+                            >
+                                {linkText}
+                            </Link>
+                        );
+                    }
+                }
+            }
+            return part;
+        });
+
+        if (isBullet) {
+            return (
+                <div key={lineIdx} className="flex items-start gap-2.5 pl-1 my-1.5 text-muted-foreground/90">
+                    <span className="text-primary mt-2 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary/70" />
+                    <span className="flex-1 leading-relaxed">{renderedLine}</span>
+                </div>
+            );
+        }
+
+        if (isNumbered) {
+            const num = line.match(/^(\d+)\.\s/)?.[1] || "1";
+            return (
+                <div key={lineIdx} className="flex items-start gap-2 pl-1 my-1.5 text-muted-foreground/90">
+                    <span className="text-primary font-mono text-xs font-bold mt-1">{num}.</span>
+                    <span className="flex-1 leading-relaxed">{renderedLine}</span>
+                </div>
+            );
+        }
+
+        return <p key={lineIdx} className="my-1.5 text-muted-foreground/90 leading-relaxed">{renderedLine}</p>;
+    });
+}
 
 export default function AIModal() {
     const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +155,7 @@ export default function AIModal() {
         {
             id: "welcome",
             sender: "bot",
-            text: "Hi! I'm Ulum's AI Assistant. Ask me anything about his background, skills, or projects! Press ESC to close.",
+            text: "Hello! I'm Bahrul Ulum's AI Assistant. Ask me anything about my background, skills, or projects! Press ESC to close.",
             timestamp: new Date(),
         },
     ]);
@@ -191,13 +293,16 @@ export default function AIModal() {
                                     className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                                 >
                                     <div
-                                        className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-line ${
-                                            msg.sender === "user"
-                                                ? "bg-primary text-primary-foreground rounded-tr-none font-medium"
-                                                : "bg-white/[0.03] border border-white/5 text-muted-foreground rounded-tl-none"
-                                        }`}
+                                        className={`max-w-[85%] rounded-2xl px-4.5 py-3 text-sm leading-relaxed ${msg.sender === "user"
+                                            ? "bg-primary text-primary-foreground rounded-tr-none font-medium shadow-md"
+                                            : "bg-white/[0.03] border border-white/5 text-muted-foreground rounded-tl-none shadow-sm backdrop-blur-[2px]"
+                                            }`}
                                     >
-                                        {msg.text}
+                                        {msg.sender === "user" ? (
+                                            <p className="whitespace-pre-line">{msg.text}</p>
+                                        ) : (
+                                            parseMarkdownToJSX(msg.text)
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -227,8 +332,8 @@ export default function AIModal() {
                             ))}
                         </div>
 
-                        {/* Message Input form */}
-                        <form
+                        {/* Message Input form commented out */}
+                        {/* <form
                             onSubmit={(e) => {
                                 e.preventDefault();
                                 handleSend(input);
@@ -252,7 +357,7 @@ export default function AIModal() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                 </svg>
                             </button>
-                        </form>
+                        </form> */}
                     </motion.div>
                 </div>
             )}
