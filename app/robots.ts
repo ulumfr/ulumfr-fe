@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: ['/dashboard/', '/auth/'],
         },
-        sitemap: 'https://ulumfr.my.id/sitemap.xml',
+        sitemap: 'https://www.ulumfr.my.id/sitemap.xml',
     };
 }

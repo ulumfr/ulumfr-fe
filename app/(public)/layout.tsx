@@ -3,7 +3,7 @@ import ScrollToTop from '@/components/portfolio/scroll-to-top';
 import AIModal from '@/components/portfolio/ai-modal';
 
 export const metadata: Metadata = {
-    metadataBase: new URL('https://ulumfr.my.id'),
+    metadataBase: new URL('https://www.ulumfr.my.id'),
     title: {
         default: 'Ulumfr — Full Stack Developer',
         template: '%s | Ulumfr',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
         title: 'Ulumfr — Full Stack Developer',
         description: 'Full Stack Developer specializing in building modern, scalable web applications with Next.js, Go, Laravel, and cloud technologies.',
         type: 'website',
-        url: 'https://ulumfr.my.id',
+        url: 'https://www.ulumfr.my.id',
         siteName: 'Ulumfr Portfolio',
         images: [
             {
@@ -64,8 +64,8 @@ export default function PublicLayout({
         "@type": "Person",
         "name": "Bahrul Ulum Fadhlur Rohman",
         "alternateName": "Ulumfr",
-        "url": "https://ulumfr.my.id",
-        "image": "https://ulumfr.my.id/icon.png",
+        "url": "https://www.ulumfr.my.id",
+        "image": "https://www.ulumfr.my.id/icon.png",
         "sameAs": [
             "https://github.com/ulumfr",
             "https://linkedin.com/in/ulumfr",
