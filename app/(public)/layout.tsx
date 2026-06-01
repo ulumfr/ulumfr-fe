@@ -4,6 +4,9 @@ import AIModal from '@/components/portfolio/ai-modal';
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://www.ulumfr.my.id'),
+    alternates: {
+        canonical: '/',
+    },
     title: {
         default: 'Ulumfr — Full Stack Developer',
         template: '%s | Ulumfr',
