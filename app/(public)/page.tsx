@@ -98,11 +98,11 @@ export default function Home() {
                     <div className="w-20 h-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center font-mono font-bold text-primary text-sm animate-pulse">
                         Ulumfr
                     </div>
-                    <div className="flex gap-1">
+                    {/* <div className="flex gap-1">
                         <div className="w-2 h-2 rounded-full bg-primary/40 animate-bounce" style={{ animationDelay: "0ms" }} />
                         <div className="w-2 h-2 rounded-full bg-primary/40 animate-bounce" style={{ animationDelay: "150ms" }} />
                         <div className="w-2 h-2 rounded-full bg-primary/40 animate-bounce" style={{ animationDelay: "300ms" }} />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         );

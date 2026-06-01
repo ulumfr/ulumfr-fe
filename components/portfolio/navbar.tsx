@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import type { Resume } from "@/types/resume";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const LANDING_NAV_ITEMS = [
     { label: "Home", href: "#home" },
@@ -185,6 +186,7 @@ export default function Navbar({ resume }: NavbarProps) {
 
                     {/* Resume CTA + Mobile Toggle */}
                     <div className="flex items-center gap-3">
+                        <ThemeToggle />
                         {resume && (
                             <motion.a
                                 href={resume.file_url}

@@ -42,8 +42,8 @@ export default function RootLayout({
           <Toaster position="top-right" richColors />
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
-            enableSystem
+            defaultTheme="dark"
+            enableSystem={false}
             disableTransitionOnChange
           >
             {children}

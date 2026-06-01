@@ -247,3 +247,14 @@
     transform: translate(-30px, 20px) scale(0.9);
   }
 }
+
+/* Smooth transition during theme toggle to prevent flashbang */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke !important;
+  transition-duration: 500ms !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-delay: 0s !important;
+}
